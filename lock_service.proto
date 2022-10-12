@@ -1,0 +1,62 @@
+
+syntax="proto3";
+// package dbx1000;
+
+option cc_generic_services = true;
+
+message EchoRequest {
+    int32 ins_id = 1;
+    string message = 2;
+};
+
+message EchoResponse {
+    string ip = 1;
+};
+
+message BuildConnRequest {
+    int32 ins_id = 1;
+    int32 ins_port = 2;
+};
+
+message BuildConnResponse {
+    int32 status = 1;
+};
+
+message DDSLockRequest {
+    uint64 key_id = 1;
+    int32 lock_type = 2;
+    int32 value_size = 3;
+    int32 ins_id = 4;
+};
+message DDSLockResponse {
+    uint64 key_id = 1;
+    bytes value = 2;
+    int32 value_size = 3;
+    int32 status = 4;
+};
+
+message ValidRequest {
+    uint64 key_id = 1;
+    int32 value_size = 2;
+    int32 ins_id = 3;
+};
+
+
+message ValidResponse {
+    uint64 key_id = 1;
+    bytes value = 2;
+    int32 value_size = 3;
+    int32 status = 4;
+};
+
+service DDSService{
+    rpc DDSLock(DDSLockRequest) returns (DDSLockResponse);
+    rpc Echo(EchoRequest) returns (EchoResponse);
+    rpc BuildConn(BuildConnRequest) returns (BuildConnResponse);
+}
+
+
+service MasterService {
+    rpc Valid(ValidRequest) returns (ValidResponse);
+    rpc Echo(EchoRequest) returns (EchoResponse);
+}
